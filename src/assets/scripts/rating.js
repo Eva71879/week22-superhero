@@ -1,25 +1,25 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const stars = document.querySelectorAll('.star');
-  
-    stars.forEach(star => {
-      star.addEventListener('click', function() {
-        const index = parseInt(this.getAttribute('data-index'));
-        setRating(index);
-      });
-    });  
+const ratingItemsList = document.querySelectorAll('.rating__item');
 
-    const savedRating = localStorage.getItem('rating');
-    if (savedRating) {
-      setRating(parseInt(savedRating));
+ratingItemsList.forEach(item => {
+    const ratingContainer = item.closest('.rating');
+
+    // Получаем уникальный ключ для сохранения и загрузки значения рейтинга
+    const ratingKey = `rating_${ratingContainer.dataset.id}`;
+
+    // Загружаем значение рейтинга из localStorage при загрузке страницы
+    const savedRatingValue = localStorage.getItem(ratingKey);
+    if (savedRatingValue && item.dataset.itemValue === savedRatingValue) {
+        // Если значение найдено, устанавливаем его для текущего элемента и родительского контейнера
+        ratingContainer.dataset.totalValue = savedRatingValue;
     }
-  });
-  
-  function setRating(index) {
-    const stars = document.querySelectorAll('.star');
-    stars.forEach((star, i) => {
-      star.classList.toggle('selected', i < index);
+
+    item.addEventListener('click', () => {
+        const itemValue = item.dataset.itemValue;
+
+        // Устанавливаем значение рейтинга для родительского контейнера
+        ratingContainer.dataset.totalValue = itemValue;
+
+        // Сохраняем значение рейтинга в localStorage
+        localStorage.setItem(ratingKey, itemValue);
     });
-    
-    localStorage.setItem('rating', index);
-  }
-  
+});

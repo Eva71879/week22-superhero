@@ -15,7 +15,6 @@ function CardList() {
                         friends={item.friends}
                         superpowers={item.superpowers}
                         imgLink={item.url}
-                        ratings='rating'
                     />
                 </Wrapper>
             ))}
